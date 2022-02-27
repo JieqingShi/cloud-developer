@@ -46,3 +46,20 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+### Implementation of image filter endpoint
+The image filter endpoint code is in server.ts. \
+It's a GET request with image_url as a query parameter, i.e. `/filteredimage?image_url={}`.
+
+The query parameter had to be set explicitly to type `String`, otherwise `npm run build` would fail due to an error message. \
+I.e. changing `let {image_url} = req.query;` to `let image_url = req.query.image_url as string;`
+(This was not a problem during local runs).
+
+I implemented an additional URL check using the `image-validator` package (https://www.npmjs.com/package/@types/jsonwebtoken). That is, before the image is being downloaded and filtered, we check for the validity of the url (assuming e.g. the user is providing the URL of an image that does not exist or is malformatted.) If the image URL is not successfully validated we return an 404 error message to the user. This way the user would be informed of the error. Otherwise if the image URL validation were not there, the image filter code would return an error message such as "Could not find MIME for buffer (null)", with no message being returned to the client.
+
+If the image validation passes, then the image is filtered and saved locally to ./util/tmp. We then send the filtered image as a response with `res.sendFile`. Afterwards we delete the local file.
+
+
+### Local deployment
+The app is running locally on `localhost:8082` per default. 
+Local testing can be done with Postman using the provided `udacity-c2-project.postman_collection.json` Postman collection.
