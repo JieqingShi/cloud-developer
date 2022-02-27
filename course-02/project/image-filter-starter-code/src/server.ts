@@ -22,7 +22,15 @@ const isImageURL = require('image-url-validator').default;
   // Added authorization
   app.get("/filteredimage/", requireAuth, async (req: Request, res: Response) => {
     // As per instructions the image url should be a query parameter
-    let {image_url} = req.query;
+    // let {image_url} = req.query;
+
+    // However this will lead to an error during 'npm run build' because await filterImageFromURL(image_url) will error out with the message
+    // Argument of type 'string | string[] | ParsedQs | ParsedQs[]' is not assignable to parameter of type 'string'.
+    // Found this fix in the in the udacity forum: https://knowledge.udacity.com/questions/346736
+    
+    let image_url = req.query.image_url as string;
+
+
     // If no image_url query parameter is provided, return error message
     if (!image_url) {
       return res.status(400).send({message: "Bad request => 'image_url' has to be provided in the query"});
