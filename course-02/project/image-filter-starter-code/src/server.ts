@@ -2,6 +2,7 @@ import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import globby = require("globby");
+import {generateJWT, requireAuth} from './auth/authorization'
 import { nextTick } from 'process';
 
 const isImageURL = require('image-url-validator').default;
@@ -35,8 +36,9 @@ const isImageURL = require('image-url-validator').default;
 
   //! END @TODO1
 
-  // As per instructions the image url should be a query parameter (not body, not params)
-  app.get("/filteredimage/", async (req: Request, res: Response) => {
+  // Added authorization
+  app.get("/filteredimage/", requireAuth, async (req: Request, res: Response) => {
+    // As per instructions the image url should be a query parameter
     let {image_url} = req.query;
     // If no image_url query parameter is provided, return error message
     if (!image_url) {
@@ -60,7 +62,6 @@ const isImageURL = require('image-url-validator').default;
 
       // Assuming there will only be one image file present in the tmp folder (as we will always delete the folder content after sending the response)
       // we send the first result, then delete the local file
-      console.log(`Filepath is ${filteredImagePaths[0]}`)
       res.sendFile(filteredImagePaths[0], {root: "."}, () => {deleteLocalFiles(filteredImagePaths)});
       
     }
@@ -79,6 +80,26 @@ const isImageURL = require('image-url-validator').default;
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
     res.send("try GET /filteredimage?image_url={{}}")
+  } );
+
+
+  // Adding a very primitive authorization endpoint
+  app.post("/login", async(req, res) => {
+    const user = req.body.user;
+    const password = req.body.password;
+    
+    if (!password) {
+      return res.status(400).send({ auth: false, message: 'Password is required' });
+    }
+
+    if (!user) {
+      return res.status(400).send({auth: false, message: 'Username is required'})
+    }
+
+    const jwt = generateJWT(user);
+
+    res.status(200).send({ auth: true, token: jwt, user: user, message: "Make a note of the jwt token for authentication"});
+
   } );
   
 
