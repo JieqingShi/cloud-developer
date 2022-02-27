@@ -7,6 +7,7 @@ import { nextTick } from 'process';
 
 const isImageURL = require('image-url-validator').default;
 
+
 (async () => {
 
   // Init the Express application
@@ -67,20 +68,21 @@ const isImageURL = require('image-url-validator').default;
 
   // Adding a very primitive authorization endpoint
   app.post("/login", async(req, res) => {
-    const user = req.body.user;
+    const username = req.body.username;
     const password = req.body.password;
     
     if (!password) {
       return res.status(400).send({ auth: false, message: 'Password is required' });
     }
 
-    if (!user) {
+    if (!username) {
       return res.status(400).send({auth: false, message: 'Username is required'})
     }
 
+    let user = {"username": username, "password": password}
     const jwt = generateJWT(user);
 
-    res.status(200).send({ auth: true, token: jwt, user: user, message: "Make a note of the jwt token for authentication"});
+    res.status(200).send({ auth: true, token: jwt, user: username, message: "Make a note of the jwt token for authentication"});
 
   } );
   

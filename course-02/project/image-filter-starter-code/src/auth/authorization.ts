@@ -10,8 +10,9 @@ import {config} from '../config/config';
 
 // Then use that token to verify the authentication through requireAuth
 
+
 export function generateJWT(user: {}): string {
-    return jwt.sign(user, config.jwt.secret);
+    return jwt.sign(JSON.stringify(user), config.jwt.secret);
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
