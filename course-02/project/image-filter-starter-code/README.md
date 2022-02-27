@@ -82,9 +82,14 @@ Initially the deployment to Elastic Beanstalk was failing after many trials. Thi
 
  Turns out the problem was that the `package.json` file was missing a `start` entry under `scripts`. Including a stanza like `"start": "node /var/app/current/www/server.js"` the deployment finally succeeded.
 
+The URL of the elastic beanstalk application is: http://image-filter-with-auth-user1734469-dev.us-east-1.elasticbeanstalk.com/
+
 
  ### Problems with some images
  Upon testing it looks the code does not work for some images. E.g. https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg 
  errors out because the image URL validation is unsuccessful. Even after disabling the image URL validation part the filter code returns an error message about "Could not find MIME for buffer (null)"
 
- However it does not seem to be related to images from wikipedia since this image e.g. https://upload.wikimedia.org/wikipedia/commons/9/93/Golden_Retriever_Carlos_%2810581910556%29.jpg works perfectly fine. 
+ However for other images it works fine. E.g. https://images-na.ssl-images-amazon.com/images/I/81Z6ATM6x0L.jpg
+
+
+

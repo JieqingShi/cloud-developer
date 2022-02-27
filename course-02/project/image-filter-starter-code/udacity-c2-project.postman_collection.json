@@ -68,7 +68,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/filteredimage?image_url=https://i.redd.it/pft48zhxfxa21.jpg",
+					"raw": "{{host}}/filteredimage?image_url=https://c4.wallpaperflare.com/wallpaper/80/478/419/magnificent-golden-creature-jose-cuervo-relaxing-in-favorite-chair-white-and-orange-tabby-cat-wallpaper-preview.jpg",
 					"host": [
 						"{{host}}"
 					],
@@ -78,7 +78,7 @@
 					"query": [
 						{
 							"key": "image_url",
-							"value": "https://i.redd.it/pft48zhxfxa21.jpg"
+							"value": "https://c4.wallpaperflare.com/wallpaper/80/478/419/magnificent-golden-creature-jose-cuervo-relaxing-in-favorite-chair-white-and-orange-tabby-cat-wallpaper-preview.jpg"
 						}
 					]
 				}
@@ -109,12 +109,12 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "http://localhost:8082",
+			"value": "http://image-filter-with-auth-user1734469-dev.us-east-1.elasticbeanstalk.com",
 			"type": "string"
 		},
 		{
 			"key": "authToken",
-			"value": "eyJhbGciOiJIUzI1NiJ9.TWVvd01lb3dGdXp6eUZhY2U.ZK3_YqJLLVDyIj7j8xVg5lzaesp1md-3vrxnJ7vc1PM",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1lb3dNZW93RnV6enlGYWNlIiwicGFzc3dvcmQiOiJib2F0eW1jYm9hdGZhY2UifQ.7237PEQOI1qzg80sePwvP7SnbbriknzyAZKYxBqEdHk",
 			"type": "string"
 		}
 	]
