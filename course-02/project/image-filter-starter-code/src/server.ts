@@ -49,7 +49,7 @@ const isImageURL = require('image-url-validator').default;
 
     if (filteredImage) {
       // Send filtered image path as response
-      const filteredImagePaths = await globby("./src/util/tmp/*.jpg");
+      const filteredImagePaths = await globby("./**/util/tmp/*.jpg");
 
       // Assuming there will only be one image file present in the tmp folder (as we will always delete the folder content after sending the response)
       // we send the first result, then delete the local file
