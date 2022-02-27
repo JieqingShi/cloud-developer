@@ -37,7 +37,8 @@ const isImageURL = require('image-url-validator').default;
 
   // As per instructions the image url should be a query parameter (not body, not params)
   app.get("/filteredimage/", async (req: Request, res: Response) => {
-    let {image_url} = req.query;
+    let image_url = req.query.image_url as string;
+    // let {image_url} = req.query;
     // If no image_url query parameter is provided, return error message
     if (!image_url) {
       return res.status(400).send({message: "Bad request => 'image_url' has to be provided in the query"});
