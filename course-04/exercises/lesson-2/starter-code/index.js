@@ -12,22 +12,53 @@ exports.handler = async (event) => {
   // TODO: Read and parse "limit" and "nextKey" parameters from query parameters
   // let nextKey // Next key to continue scan operation if necessary
   // let limit // Maximum number of elements to return
+  let nextKey;
+  let limit;
+  
+  // from lecture: access query parameters limit and nextKey from event.queryStringParameters
+  // const limit = event.queryStringParameters.limit
+  // const nextKey = event.queryStringParameters.nextKey
 
   // HINT: You might find the following method useful to get an incoming parameter value
   // getQueryParameter(event, 'param')
+  try {
+    limit = getQueryParameter(event, 'limit') || 20
+    nextKey = getQueryParameter(event, 'nextKey')
+  } catch (e) {
+    console.log('Failed to parse query parameters!')
+    return {statusCode: 400, 
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify(e.message)}
+  }
+  // limit = getQueryParameter(event, 'limit')
+  // nextKey = getQueryParameter(event, 'nextKey')
 
+  // if (limit == undefined || nextKey == undefined) {
+  //   return {statusCode: 400, body: 'limit and nextKey are required'}
+  // }
   // TODO: Return 400 error if parameters are invalid
 
   // Scan operation parameters
   const scanParams = {
     TableName: groupsTable,
-    // TODO: Set correct pagination parameters
-    // Limit: ???,
-    // ExclusiveStartKey: ???
+    Limit: limit,
+    ExclusiveStartKey: JSON.parse(decodeURIComponent(nextKey))
   }
+
   console.log('Scan params: ', scanParams)
 
   const result = await docClient.scan(scanParams).promise()
+
+  // from lecture
+  // const startKey = result.LastEvaluatedKey
+  // const moreData = await docClient.scan({
+  //   TableName: groupsTable,
+  //   Limit: 5,
+  //   ExclusiveStartKey: startKey
+
+  // }).promise()
 
   const items = result.Items
 
@@ -39,6 +70,7 @@ exports.handler = async (event) => {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
+    // body always needs to be a string and thus requires JSON.stringify, it seems
     body: JSON.stringify({
       items,
       // Encode the JSON object so a client can return it in a URL as is

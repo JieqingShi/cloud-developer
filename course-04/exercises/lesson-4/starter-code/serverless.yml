@@ -54,14 +54,14 @@ provider:
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}
 
-custom:
+:
   topicName: imagesTopic-${self:provider.stage}
   documentation:
     api:
       info:
         version: v1.0.0
         title: Udagram API
-        description: Serverless application for images sharing
+        description: Servercustomless application for images sharing
     models:
       - name: GroupRequest
         contentType: application/json
